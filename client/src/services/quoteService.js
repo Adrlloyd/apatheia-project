@@ -1,6 +1,8 @@
+const API_BASE = import.meta.env.VITE_API_BASE;
+
 export async function fetchDailyQuote() {
   try {
-    const response = await fetch('http://localhost:3000/api/quote');
+    const response = await fetch(`${API_BASE}/quote`);
     if (!response.ok) {
       throw new Error(`Failed to fetch quote: ${response.status}`);
     }

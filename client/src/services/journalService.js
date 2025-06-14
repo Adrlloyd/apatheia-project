@@ -1,5 +1,7 @@
+const API_BASE = import.meta.env.VITE_API_BASE;
+
 export async function fetchTodayJournal(token) {
-  const response = await fetch('http://localhost:3000/api/journal/today', {
+  const response = await fetch(`${API_BASE}/journal/today`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -7,12 +9,12 @@ export async function fetchTodayJournal(token) {
 
   if (!response.ok) throw new Error('No journal found for today.');
   return await response.json();
-};
+}
 
 export async function saveOrUpdateJournal({ input, existingEntry, quoteId, token }) {
   const endpoint = existingEntry
-    ? 'http://localhost:3000/api/journal/update'
-    : 'http://localhost:3000/api/journal';
+    ? `${API_BASE}/journal/update`
+    : `${API_BASE}/journal`;
   const method = existingEntry ? 'PUT' : 'POST';
 
   const body = JSON.stringify({
@@ -36,16 +38,25 @@ export async function saveOrUpdateJournal({ input, existingEntry, quoteId, token
   return result;
 };
 
-export async function fetchJournalHistory(token) {
-  const response = await fetch('http://localhost:3000/api/journal/history', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export async function fetchJournalHistory(token, mode = 'recent') {
+  const endpoint =
+    mode === 'recent' ? `${API_BASE}/journal/recent` : `${API_BASE}/journal/by-month`;
 
-  if (!response.ok) {
-    const err = await response.text();
-    throw new Error(err || 'Error fetching journal history.');
+  try {
+    const response = await fetch(endpoint, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || 'Failed to fetch journal history');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(`Error in fetchJournalHistory [${mode}]:`, error);
+    throw error;
   }
-  return await response.json();
-}
+};

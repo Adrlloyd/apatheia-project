@@ -1,5 +1,7 @@
+const API_BASE = import.meta.env.VITE_API_BASE;
+
 export async function registerUser(formData) {
-  const response = await fetch('http://localhost:3000/api/register', {
+  const response = await fetch(`${API_BASE}/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(formData),

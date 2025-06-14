@@ -33,3 +33,34 @@
   white-space: pre-wrap;
   margin-top: 0.5rem;
 }
+
+h3 {
+  font-size: 1.3rem;
+  margin-top: 2rem;
+  font-family: "Cinzel", serif;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.5rem;
+}
+
+.month-group {
+  margin-bottom: 1.5rem;
+}
+
+.month-toggle {
+  background: none;
+  border: none;
+  color: #444;
+  font-size: 1.1rem;
+  font-weight: bold;
+  font-family: "Cinzel", serif;
+  cursor: pointer;
+  margin-top: 1rem;
+  display: block;
+}
+
+.no-entries-message {
+  font-style: italic;
+  color: #777;
+  margin-top: 1rem;
+  font-family: "Cinzel", serif;
+}

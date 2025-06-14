@@ -1,7 +1,7 @@
 const API_BASE = import.meta.env.VITE_API_BASE
 
 export const updateName = async (name, token) => {
-  return fetch(`${API_BASE}/update-name`, {
+  return fetch(`${API_BASE}/users/update-name`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -12,7 +12,7 @@ export const updateName = async (name, token) => {
 };
 
 export const updateUsername = async (username, token) => {
-  return fetch(`${API_BASE}/update-username`, {
+  return fetch(`${API_BASE}/users/update-username`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ export const updateUsername = async (username, token) => {
 };
 
 export const updatePassword = async (currentPassword, newPassword, token) => {
-  return fetch(`${API_BASE}/update-password`, {
+  return fetch(`${API_BASE}/users/update-password`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ export const updatePassword = async (currentPassword, newPassword, token) => {
 };
 
 export const deleteUser = async (token) => {
-  return fetch(`${API_BASE}`, {
+  return fetch(`${API_BASE}/users`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token}`,
