@@ -8,9 +8,14 @@ Each user receives one unique quote every 24 hours, ensuring no quote repeats wi
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: React (JavaScript)
-- **Backend**: Node.js, Express
-- **Database**: PostgreSQL with Sequelize ORM
+- **Frontend**: React (JavaScript) ![React](https://img.shields.io/badge/React-JavaScript-61DAFB?logo=react&logoColor=white&style=flat)
+
+- **Backend**: Node.js, Express ![Node.js](https://img.shields.io/badge/Node.js-JavaScript-339933?logo=nodedotjs&logoColor=white&style=flat)
+![Express](https://img.shields.io/badge/Express.js-Backend-000000?logo=express&logoColor=white&style=flat)
+
+- **Database**: PostgreSQL with Sequelize ORM ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791?logo=postgresql&logoColor=white&style=flat)
+![Sequelize](https://img.shields.io/badge/Sequelize-ORM-52B0E7?logo=sequelize&logoColor=white&style=flat)
+
 
 ---
 
