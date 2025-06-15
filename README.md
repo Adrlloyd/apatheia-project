@@ -2,7 +2,9 @@
 
 Apatheia delivers a carefully selected Stoic quote each day to inspire reflection and mindful journaling. Designed as a modern alternative to traditional journaling, the app offers a convenient way to capture and carry your thoughts anywhere.
 
-Each user receives one unique quote every 24 hours, ensuring no quote repeats within a year. Your daily response is saved automatically and can be updated throughout the day. All entries are organized in an archive, allowing you to revisit and review your personal growth over time. Apatheia supports sustained introspection with a simple, elegant interface grounded in Stoic wisdom.
+Each user receives one unique quote every 24 hours, ensuring no quote repeats within a year. Your daily response is saved automatically and can be updated throughout the day. All entries are organized in an archive, allowing you to revisit and review your personal growth over time.
+
+Apatheia also includes an optional AI-powered reflection tool. After submitting your journal entry, you can choose to explore your thoughts further by receiving a Stoic-inspired question designed to deepen your introspection. With a simple, elegant interface grounded in Stoic wisdom, Apatheia supports sustained personal insight and intentional living.
 
 ---
 
