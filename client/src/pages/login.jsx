@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Login-Register.css';
 import { loginUser } from '../services/loginService';
+import { storeUserSession } from '../utils/storageUtils';
 
 function Login() {
   const [credentials, setCredentials] = useState({
@@ -20,12 +21,7 @@ function Login() {
 
     try {
       const result = await loginUser(credentials);
-
-      localStorage.setItem('token', result.token);
-      localStorage.setItem('name', result.name);
-      localStorage.setItem('id', result.id);
-      localStorage.setItem('firstVisit', 'false');
-
+      storeUserSession(result);
       navigate('/home');
     } catch (error) {
       alert(error.message);

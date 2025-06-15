@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import '../styles/Archive.css';
 import Navbar from '../components/Navbar';
 import { fetchJournalHistory } from '../services/journalService';
+import RecentArchiveGroup from '../components/RecentArchiveGroup';
+import MonthlyArchiveGroup from '../components/MonthlyArchiveGroup';
 
 function Archive() {
   const [recentEntries, setRecentEntries] = useState([]);
@@ -47,61 +49,28 @@ function Archive() {
             "The unexamined past is silent — begin the record today."
           </p>
         ) : (
-          <>
-            <h3>Recent Entries</h3>
-            {recentEntries.map((entry) => (
-              <div key={entry.id} className="entry-preview">
-                <button
-                  onClick={() => toggleRecentExpand(entry.id)}
-                  className="entry-date"
-                >
-                  {new Date(entry.createdAt).toLocaleDateString()}
-                </button>
-                {expandedRecentId === entry.id && (
-                  <div className="entry-details">
-                    <blockquote>"{entry.Quote.quote_text}"</blockquote>
-                    <p>— {entry.Quote.author}</p>
-                    <div className="journal-readonly">{entry.journal_text}</div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </>
+          <RecentArchiveGroup
+            entries={recentEntries}
+            expandedEntryId={expandedRecentId}
+            onEntryToggle={toggleRecentExpand}
+          />
         )}
 
         {Object.keys(monthlyEntries).length > 0 && (
           <>
             <h3>Past Entries by Month</h3>
             {Object.entries(monthlyEntries).map(([month, entries]) => (
-              <div key={month} className="month-group">
-                <button
-                  onClick={() =>
-                    setExpandedMonth(expandedMonth === month ? null : month)
-                  }
-                  className="month-toggle"
-                >
-                  {month}
-                </button>
-
-                {expandedMonth === month &&
-                  entries.map((entry) => (
-                    <div key={entry.id} className="entry-preview">
-                      <button
-                        onClick={() => toggleMonthExpand(entry.id)}
-                        className="entry-date"
-                      >
-                        {new Date(entry.createdAt).toLocaleDateString()}
-                      </button>
-                      {expandedMonthEntryId === entry.id && (
-                        <div className="entry-details">
-                          <blockquote>"{entry.Quote.quote_text}"</blockquote>
-                          <p>— {entry.Quote.author}</p>
-                          <div className="journal-readonly">{entry.journal_text}</div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-              </div>
+              <MonthlyArchiveGroup
+                key={month}
+                month={month}
+                entries={entries}
+                isExpanded={expandedMonth === month}
+                onMonthToggle={(m) =>
+                  setExpandedMonth(expandedMonth === m ? null : m)
+                }
+                expandedEntryId={expandedMonthEntryId}
+                onEntryToggle={toggleMonthExpand}
+              />
             ))}
           </>
         )}

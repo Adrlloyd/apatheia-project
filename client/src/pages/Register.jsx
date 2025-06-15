@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Login-Register.css';
-import { registerUser } from '../services/registerService';
 import Modal from '../components/Modal';
+import { registerUser } from '../services/registerService';
+import { storeUserSession } from '../utils/storageUtils';
+import { validateNewPassword } from '../utils/validationUtils';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -21,19 +23,15 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.password.length < 6) {
-      alert('Password must be at least 6 characters long.');
+    const validationError = validateNewPassword(formData.password);
+    if (validationError) {
+      alert(validationError);
       return;
     }
 
     try {
       const result = await registerUser(formData);
-
-      localStorage.setItem('token', result.token);
-      localStorage.setItem('name', result.name);
-      localStorage.setItem('id', result.id);
-      localStorage.setItem('firstVisit', 'true');
-
+      storeUserSession({ ...result, firstVisit: true });
       setShowSuccessModal(true);
     } catch (error) {
       alert(error.message);

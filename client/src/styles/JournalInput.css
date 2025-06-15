@@ -37,3 +37,19 @@
   margin-top: 16px;
   padding: 12px;
 }
+
+.status-message {
+  margin-top: 1rem;
+  transition: opacity 1s ease-out;
+  opacity: 1;
+  min-height: 1.5rem;
+  text-align: center;
+}
+
+.status-message.fade-out {
+  opacity: 0;
+}
+
+.invisible {
+  visibility: hidden;
+}

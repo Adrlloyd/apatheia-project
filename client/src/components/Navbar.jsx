@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import '../styles/Navbar.css';
+import { getUserInfo, clearUserSession } from '../utils/storageUtils';
 
 function Navbar() {
   const [name, setName] = useState('');
@@ -9,17 +10,15 @@ function Navbar() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setName(localStorage.getItem('name') || '');
-    setIsFirstVisit(localStorage.getItem('firstVisit') === 'true');
+    const { name, firstVisit } = getUserInfo();
+    setName(name);
+    setIsFirstVisit(firstVisit);
   }, []);
 
   const greeting = isFirstVisit ? 'Chaire' : 'Welcome back';
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('name');
-    localStorage.removeItem('firstVisit');
-    localStorage.removeItem('id');
+    clearUserSession();
     navigate('/');
   };
 

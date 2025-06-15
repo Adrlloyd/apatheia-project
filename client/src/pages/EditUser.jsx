@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import '../styles/EditUser.css';
 import Modal from '../components/Modal';
+import '../styles/EditUser.css';
 import { updateName, updateUsername, updatePassword, deleteUser } from '../services/userService';
+import { getToken, updateStoredName, clearUserData } from '../utils/storageUtils';
+import { validateNewPassword } from '../utils/validationUtils';
 
 function EditUser() {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
+  const token = getToken();
 
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
@@ -23,7 +25,7 @@ function EditUser() {
     try {
       if (name) {
         await updateName(name, token);
-        localStorage.setItem('name', name);
+        updateStoredName(name);
       }
 
       if (username) {
@@ -35,13 +37,9 @@ function EditUser() {
       }
 
       if (newPassword) {
-        if (newPassword.length < 6) {
-          setStatus('Password must be at least 6 characters long.');
-          return;
-        }
-
-        if (!currentPassword) {
-          setStatus('Please enter your current password to change it.');
+        const errorMsg = validateNewPassword(newPassword, currentPassword);
+        if (errorMsg) {
+          setStatus(errorMsg);
           return;
         }
 
@@ -67,7 +65,7 @@ function EditUser() {
     try {
       const response = await deleteUser(token);
       if (response.ok) {
-        localStorage.clear();
+        clearUserData();
         navigate('/');
       } else {
         console.error('Failed to delete account');
