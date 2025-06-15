@@ -23,7 +23,7 @@
   display: none;
 }
 
-.submit-button {
+.submit-button, .explore-button {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   border: none;
@@ -31,4 +31,9 @@
   cursor: pointer;
   background-color: #333;
   color: #fff;
+}
+
+.reflection-question {
+  margin-top: 16px;
+  padding: 12px;
 }

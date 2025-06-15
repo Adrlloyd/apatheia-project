@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./models/db');
@@ -6,6 +7,7 @@ const authRoutes = require('./routes/authRoutes');
 const quoteRoutes = require('./routes/quotesRoute');
 const journalRoutes = require('./routes/journalRoutes');
 const userRoutes = require('./routes/userRoutes');
+const openapiRoutes = require('./routes/openaiRoute')
 
 const app = express();
 app.use(cors());
@@ -15,6 +17,7 @@ app.use('/api', authRoutes);
 app.use('/api/quote', quoteRoutes);
 app.use('/api/journal', journalRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/openai', openapiRoutes);
 
 app.listen(3000, async () => {
   try {
