@@ -1,13 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const {
+import { Router } from 'express';
+import {
   createJournalEntry,
   updateJournalEntry,
   getTodaysEntry,
   getUserJournalHistoryRecentFive,
   getUserJournalHistoryByMonth,
-} = require('../controllers/journalController');
-const verifyToken = require('../middleware/verifyToken');
+} from '../controllers/journalController';
+import verifyToken from '../middleware/verifyToken';
+
+const router: Router = Router();
 
 router.post('/', verifyToken, createJournalEntry);
 router.get('/recent', verifyToken, getUserJournalHistoryRecentFive);
@@ -15,4 +16,4 @@ router.get('/by-month', verifyToken, getUserJournalHistoryByMonth);
 router.put('/update', verifyToken, updateJournalEntry);
 router.get('/today', verifyToken, getTodaysEntry);
 
-module.exports = router;
+export default router;

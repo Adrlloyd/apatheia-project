@@ -1,15 +1,19 @@
-const JournalEntry = require('../models/journalEntryModel');
-const Quote = require('../models/quoteModel');
+import { Request, Response } from 'express';
+import JournalEntry from '../models/journalEntryModel';
+import Quote from '../models/quoteModel';
 
-exports.createJournalEntry = async (req, res) => {
+interface AuthenticatedRequest extends Request {
+  userId?: string;
+}
+
+export const createJournalEntry = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const { journal_text, quote_id } = req.body;
     const userId = req.userId;
 
     if (!journal_text || !quote_id) {
-      return res
-        .status(400)
-        .json({ message: 'Missing journal text or quote.' });
+      res.status(400).json({ message: 'Missing journal text or quote.' });
+      return;
     }
 
     const today = new Date().toISOString().split('T')[0];
@@ -17,7 +21,7 @@ exports.createJournalEntry = async (req, res) => {
     const entry = await JournalEntry.create({
       journal_text,
       quote_id,
-      user_id: userId,
+      user_id: userId as string,
       date: today,
     });
 
@@ -28,7 +32,7 @@ exports.createJournalEntry = async (req, res) => {
   }
 };
 
-exports.getUserJournalHistoryRecentFive = async (req, res) => {
+export const getUserJournalHistoryRecentFive = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const userId = req.userId;
 
@@ -49,7 +53,7 @@ exports.getUserJournalHistoryRecentFive = async (req, res) => {
   }
 };
 
-exports.getUserJournalHistoryByMonth = async (req, res) => {
+export const getUserJournalHistoryByMonth = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const userId = req.userId;
 
@@ -62,36 +66,34 @@ exports.getUserJournalHistoryByMonth = async (req, res) => {
       order: [['createdAt', 'DESC']],
     });
 
-    const grouped = {};
+    const grouped: Record<string, typeof entries> = {};
 
     entries.forEach((entry) => {
-      const date = new Date(entry.createdAt);
+      const date = new Date(entry.createdAt as Date);
       const key = `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
 
       if (!grouped[key]) {
         grouped[key] = [];
       }
+
       grouped[key].push(entry);
     });
 
     res.status(200).json(grouped);
   } catch (error) {
     console.error('Error grouping journal entries by month:', error);
-    res
-      .status(500)
-      .json({ message: 'Could not retrieve entries grouped by month.' });
+    res.status(500).json({ message: 'Could not retrieve entries grouped by month.' });
   }
 };
 
-exports.updateJournalEntry = async (req, res) => {
+export const updateJournalEntry = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const { journal_text, date } = req.body;
     const userId = req.userId;
 
     if (!journal_text || !date) {
-      return res
-        .status(400)
-        .json({ message: 'Missing updated journal text or date.' });
+      res.status(400).json({ message: 'Missing updated journal text or date.' });
+      return;
     }
 
     const entry = await JournalEntry.findOne({
@@ -102,9 +104,8 @@ exports.updateJournalEntry = async (req, res) => {
     });
 
     if (!entry) {
-      return res
-        .status(404)
-        .json({ message: 'Entry not found for this date.' });
+      res.status(404).json({ message: 'Entry not found for this date.' });
+      return;
     }
 
     entry.journal_text = journal_text;
@@ -117,7 +118,7 @@ exports.updateJournalEntry = async (req, res) => {
   }
 };
 
-exports.getTodaysEntry = async (req, res) => {
+export const getTodaysEntry = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const userId = req.userId;
     const today = new Date().toISOString().split('T')[0];
@@ -134,7 +135,8 @@ exports.getTodaysEntry = async (req, res) => {
     });
 
     if (!entry) {
-      return res.status(404).json({ message: 'No entry found for today.' });
+      res.status(404).json({ message: 'No entry found for today.' });
+      return;
     }
 
     res.status(200).json(entry);

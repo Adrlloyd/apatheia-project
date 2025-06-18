@@ -1,13 +1,17 @@
-const User = require('../models/userModel');
-const bcrypt = require('bcryptjs');
+import { Request, Response } from 'express';
+import bcrypt from 'bcryptjs';
+import User from '../models/userModel';
 
-exports.deleteUser = async (req, res) => {
+interface AuthenticatedRequest extends Request {
+  userId?: string;
+}
+
+export const deleteUser = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const userId = req.userId;
 
-    // Delete the user
     await User.destroy({ where: { id: userId } });
-   
+
     res.status(200).json({ message: 'User account deleted.' });
   } catch (error) {
     console.error('Error deleting user:', error);
@@ -15,19 +19,21 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
-exports.updateUserName = async (req, res) => {
+export const updateUserName = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const userId = req.userId;
     const { name } = req.body;
 
     if (!name) {
-      return res.status(400).json({ message: 'Name is required.' });
+      res.status(400).json({ message: 'Name is required.' });
+      return;
     }
 
     const user = await User.findByPk(userId);
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found.' });
+      res.status(404).json({ message: 'User not found.' });
+      return;
     }
 
     user.name = name;
@@ -40,28 +46,28 @@ exports.updateUserName = async (req, res) => {
   }
 };
 
-exports.updateUsername = async (req, res) => {
+export const updateUsername = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const userId = req.userId;
     const { username } = req.body;
 
     if (!username) {
-      return res.status(400).json({ message: 'Username is required.' });
+      res.status(400).json({ message: 'Username is required.' });
+      return;
     }
 
-    // Check if username is taken by someone else
-    const existingUser = await User.findOne({
-      where: { username }
-    });
+    const existingUser = await User.findOne({ where: { username } });
 
     if (existingUser && existingUser.id !== userId) {
-      return res.status(409).json({ message: 'Username already in use.' });
+      res.status(409).json({ message: 'Username already in use.' });
+      return;
     }
 
     const user = await User.findByPk(userId);
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found.' });
+      res.status(404).json({ message: 'User not found.' });
+      return;
     }
 
     user.username = username;
@@ -74,27 +80,32 @@ exports.updateUsername = async (req, res) => {
   }
 };
 
-exports.updatePassword = async (req, res) => {
+export const updatePassword = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const userId = req.userId;
     const { currentPassword, newPassword } = req.body;
 
     if (!currentPassword || !newPassword) {
-      return res.status(400).json({ message: 'Both current and new passwords are required.' });
+      res.status(400).json({ message: 'Both current and new passwords are required.' });
+      return;
     }
 
     const user = await User.findByPk(userId);
+
     if (!user) {
-      return res.status(404).json({ message: 'User not found.' });
+      res.status(404).json({ message: 'User not found.' });
+      return;
     }
 
     const passwordMatch = await bcrypt.compare(currentPassword, user.password_hash);
     if (!passwordMatch) {
-      return res.status(401).json({ message: 'Current password is incorrect.' });
+      res.status(401).json({ message: 'Current password is incorrect.' });
+      return;
     }
 
     if (newPassword.length < 6) {
-      return res.status(400).json({ message: 'New password must be at least 6 characters long.' });
+      res.status(400).json({ message: 'New password must be at least 6 characters long.' });
+      return;
     }
 
     const newHashedPassword = await bcrypt.hash(newPassword, 10);

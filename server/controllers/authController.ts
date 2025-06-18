@@ -1,28 +1,30 @@
-const User = require('../models/userModel');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import { Request, Response } from 'express';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import User from '../models/userModel';
 
-exports.registerUser = async (req, res) => {
+const JWT_SECRET = process.env.JWT_SECRET as string;
+
+export const registerUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, username, password } = req.body;
 
     if (!name || !password) {
-      return res
-        .status(400)
-        .json({ message: 'Name and password are required.' });
+      res.status(400).json({ message: 'Name and password are required.' });
+      return;
     }
 
     const existingUser = await User.findOne({ where: { username } });
-
     if (existingUser) {
-      return res.status(409).json({ message: 'User already exists.' });
+      res.status(409).json({ message: 'User already exists.' });
+      return;
     }
 
     if (password.length < 6) {
-      return res.status(400).json({ message: 'Password must be at least 6 characters long.' });
+      res.status(400).json({ message: 'Password must be at least 6 characters long.' });
+      return;
     }
-    
-    // Hash password
+
     const password_hash = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
@@ -33,15 +35,15 @@ exports.registerUser = async (req, res) => {
 
     const token = jwt.sign(
       { userId: newUser.id, name: newUser.name },
-      process.env.JWT_SECRET,
-      { expiresIn: '30m' },
+      JWT_SECRET,
+      { expiresIn: '30m' }
     );
 
     res.status(201).json({
       message: 'Registration successful.',
       token,
       name: newUser.name,
-      id: newUser.id
+      id: newUser.id,
     });
   } catch (error) {
     console.error('Error in registerUser:', error);
@@ -49,40 +51,38 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-exports.loginUser = async (req, res) => {
+export const loginUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { username, password } = req.body;
 
     if (!username || !password) {
-      return res
-        .status(400)
-        .json({ message: 'Username and password required.' });
+      res.status(400).json({ message: 'Username and password required.' });
+      return;
     }
 
-    // Check if user exists
     const user = await User.findOne({ where: { username } });
     if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials.' });
+      res.status(401).json({ message: 'Invalid credentials.' });
+      return;
     }
 
-    // Compare hashed passwords
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
     if (!passwordMatch) {
-      return res.status(401).json({ message: 'Invalid credentials.' });
+      res.status(401).json({ message: 'Invalid credentials.' });
+      return;
     }
 
-    // Create JWT
     const token = jwt.sign(
       { userId: user.id, name: user.name },
-      process.env.JWT_SECRET,
-      { expiresIn: '30m' },
+      JWT_SECRET,
+      { expiresIn: '30m' }
     );
 
     res.status(200).json({
       message: 'Login successful.',
       token,
       name: user.name,
-      id: user.id
+      id: user.id,
     });
   } catch (error) {
     console.error('Error in loginUser:', error);

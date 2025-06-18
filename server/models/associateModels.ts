@@ -1,6 +1,6 @@
-const User = require('./userModel');
-const Quote = require('./quoteModel');
-const JournalEntry = require('./journalEntryModel');
+import User from './userModel';
+import Quote from './quoteModel';
+import JournalEntry from './journalEntryModel';
 
 // User <-> JournalEntry
 User.hasMany(JournalEntry, { foreignKey: 'user_id', onDelete: 'CASCADE' });
@@ -10,4 +10,4 @@ JournalEntry.belongsTo(User, { foreignKey: 'user_id', onDelete: 'CASCADE' });
 Quote.hasMany(JournalEntry, { foreignKey: 'quote_id' });
 JournalEntry.belongsTo(Quote, { foreignKey: 'quote_id' });
 
-module.exports = { User, Quote, JournalEntry };
+export { User, Quote, JournalEntry };
