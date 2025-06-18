@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar';
 import Modal from '../components/Modal';
 import '../styles/EditUser.css';
 import { updateName, updateUsername, updatePassword, deleteUser } from '../services/userService';
-import { getToken, updateStoredName, clearUserData } from '../utils/storageUtils';
+import { getToken, updateStoredName, clearUserSession } from '../utils/storageUtils';
 import { validateNewPassword } from '../utils/validationUtils';
 
 function EditUser() {
@@ -65,7 +65,7 @@ function EditUser() {
     try {
       const response = await deleteUser(token);
       if (response.ok) {
-        clearUserData();
+        clearUserSession();
         navigate('/');
       } else {
         console.error('Failed to delete account');

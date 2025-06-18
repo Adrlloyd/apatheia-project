@@ -59,7 +59,7 @@ Update these values with your PostgreSQL credentials and a JWT secret.
 #### 🌱 Seed the Database
 To populate the app with sample data, run:
 - cd server
-- node seed.js
+- npm run seed
 
 This will create:
 
@@ -72,7 +72,7 @@ Five quotes (three dated in the past, each with a journal entry).
 #### ⚙️ Usage
 Start the Backend Server
 - cd server
-- nodemon index.js
+- npm run dev
   
 Start the Frontend Client
 In a separate terminal:

@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express, { Application } from 'express';
 import cors from 'cors';
+dotenv.config();
 
 import connectDB from './models/db';
 import { User, Quote, JournalEntry } from './models/associateModels';
@@ -10,7 +11,6 @@ import journalRoutes from './routes/journalRoutes';
 import userRoutes from './routes/userRoutes';
 import openapiRoutes from './routes/openaiRoute';
 
-dotenv.config();
 
 const app: Application = express();
 
