@@ -1,12 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-
+import { config } from '../config';
 
 interface AuthenticatedRequest extends Request {
   userId?: string;
 }
-
-const JWT_SECRET = process.env.JWT_SECRET as string;
 
 function verifyToken(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
   const authHeader = req.headers.authorization;
@@ -19,7 +17,7 @@ function verifyToken(req: AuthenticatedRequest, res: Response, next: NextFunctio
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+    const decoded = jwt.verify(token, config.jwtSecret) as { userId: string };
     req.userId = decoded.userId;
     next();
   } catch (error) {

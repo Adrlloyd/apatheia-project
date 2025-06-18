@@ -1,32 +1,13 @@
-import dotenv from 'dotenv';
-import express, { Application } from 'express';
-import cors from 'cors';
-dotenv.config();
-
+import app from './app';
 import connectDB from './models/db';
-import './models/associateModels'; 
-import authRoutes from './routes/authRoutes';
-import quoteRoutes from './routes/quotesRoute';
-import journalRoutes from './routes/journalRoutes';
-import userRoutes from './routes/userRoutes';
-import openapiRoutes from './routes/openaiRoute';
+import { config } from './config';
 
+let PORT = config.port;
 
-const app: Application = express();
-
-app.use(cors());
-app.use(express.json());
-
-app.use('/api', authRoutes);
-app.use('/api/quote', quoteRoutes);
-app.use('/api/journal', journalRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/openai', openapiRoutes);
-
-app.listen(3000, async () => {
+app.listen(PORT, async () => {
   try {
     await connectDB();
-    console.log('Server running Λ');
+    console.log(`Server running on port ${PORT} Λ`);
   } catch (error) {
     console.error('Failed to connect to DB:', error);
     process.exit(1);

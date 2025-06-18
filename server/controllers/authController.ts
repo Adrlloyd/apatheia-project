@@ -1,9 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import User from '../models/userModel';
-
-const JWT_SECRET = process.env.JWT_SECRET as string;
+import { generateToken } from '../utils/generateToken';
 
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -33,11 +31,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
       password_hash,
     });
 
-    const token = jwt.sign(
-      { userId: newUser.id, name: newUser.name },
-      JWT_SECRET,
-      { expiresIn: '30m' }
-    );
+    const token = generateToken({ userId: newUser.id, name: newUser.name });
 
     res.status(201).json({
       message: 'Registration successful.',
@@ -45,6 +39,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
       name: newUser.name,
       id: newUser.id,
     });
+
   } catch (error) {
     console.error('Error in registerUser:', error);
     res.status(500).json({ message: 'Internal server error.' });
@@ -72,11 +67,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const token = jwt.sign(
-      { userId: user.id, name: user.name },
-      JWT_SECRET,
-      { expiresIn: '30m' }
-    );
+    const token = generateToken({ userId: user.id, name: user.name });
 
     res.status(200).json({
       message: 'Login successful.',
@@ -84,6 +75,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       name: user.name,
       id: user.id,
     });
+
   } catch (error) {
     console.error('Error in loginUser:', error);
     res.status(500).json({ message: 'Internal server error.' });

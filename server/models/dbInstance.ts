@@ -1,19 +1,12 @@
 import { Sequelize } from 'sequelize';
+import { config } from '../config';
 
-const databaseName = process.env.DATABASE_NAME as string;
-const databaseUser = process.env.DATABASE_USER as string;
-const databasePassword = process.env.DATABASE_PASSWORD as string;
-const databaseHost = process.env.DATABASE_HOST as string;
+const { name, user, password, host } = config.db;
 
-const sequelize = new Sequelize(
-  databaseName,
-  databaseUser,
-  databasePassword,
-  {
-    host: databaseHost,
-    dialect: 'postgres',
-    logging: false,
-  }
-);
+const sequelize = new Sequelize(name, user, password, {
+  host,
+  dialect: 'postgres',
+  logging: false,
+});
 
 export default sequelize;
