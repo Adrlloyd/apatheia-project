@@ -1,6 +1,6 @@
 import app from './app';
 import connectDB from './models/db';
-import { config } from './config';
+import { config } from './config/config';
 
 let PORT = config.port;
 
