@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/Login-Register.css';
 import { loginUser } from '../services/loginService';
 import { storeUserSession } from '../utils/storageUtils';
+import { setupAutoLogout } from '../utils/autoLogout';
 
 function Login() {
   const [credentials, setCredentials] = useState({
@@ -22,6 +23,7 @@ function Login() {
     try {
       const result = await loginUser(credentials);
       storeUserSession(result);
+      setupAutoLogout(result.token, () => navigate('/'));
       navigate('/home');
     } catch (error) {
       alert(error.message);

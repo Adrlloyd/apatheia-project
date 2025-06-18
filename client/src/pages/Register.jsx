@@ -5,6 +5,7 @@ import Modal from '../components/Modal';
 import { registerUser } from '../services/registerService';
 import { storeUserSession } from '../utils/storageUtils';
 import { validateNewPassword } from '../utils/validationUtils';
+import { setupAutoLogout } from '../utils/autoLogout';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -32,6 +33,7 @@ function Register() {
     try {
       const result = await registerUser(formData);
       storeUserSession({ ...result, firstVisit: true });
+      setupAutoLogout(result.token, () => navigate('/'));
       setShowSuccessModal(true);
     } catch (error) {
       alert(error.message);
