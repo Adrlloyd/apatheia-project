@@ -19,13 +19,17 @@
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: React (JavaScript) ![React](https://img.shields.io/badge/React-JavaScript-61DAFB?logo=react&logoColor=white&style=flat)
+- **Frontend**: React (JavaScript)  
+  ![React](https://img.shields.io/badge/React-JavaScript-61DAFB?logo=react&logoColor=white&style=flat)
 
-- **Backend**: Node.js, Express ![Node.js](https://img.shields.io/badge/Node.js-JavaScript-339933?logo=nodedotjs&logoColor=white&style=flat)
-![Express](https://img.shields.io/badge/Express.js-Backend-000000?logo=express&logoColor=white&style=flat)
+- **Backend**: Node.js, Express  
+  ![Node.js](https://img.shields.io/badge/Node.js-JavaScript-339933?logo=nodedotjs&logoColor=white&style=flat)
+  ![Express](https://img.shields.io/badge/Express.js-Backend-000000?logo=express&logoColor=white&style=flat)
+  ![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?logo=typescript&logoColor=white&style=flat)
 
-- **Database**: PostgreSQL with Sequelize ORM ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791?logo=postgresql&logoColor=white&style=flat)
-![Sequelize](https://img.shields.io/badge/Sequelize-ORM-52B0E7?logo=sequelize&logoColor=white&style=flat)
+- **Database**: PostgreSQL with Sequelize ORM  
+  ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791?logo=postgresql&logoColor=white&style=flat)
+  ![Sequelize](https://img.shields.io/badge/Sequelize-ORM-52B0E7?logo=sequelize&logoColor=white&style=flat)
 
 
 ---
@@ -52,15 +56,11 @@ Frontend
 ### 4. Configure Environment Variables
 In the server directory, create a .env file:
 
-DB_NAME=apatheia_dev
-
-DB_USER=your_db_username
-
-DB_PASSWORD=your_db_password
-
-DB_HOST=localhost
-
-JWT_SECRET=your_jwt_secret
+DB_NAME=apatheia_dev  
+DB_USER=your_db_username  
+DB_PASSWORD=your_db_password  
+DB_HOST=localhost  
+JWT_SECRET=your_jwt_secret  
 
 Update these values with your PostgreSQL credentials and a JWT secret.
 
@@ -72,9 +72,9 @@ To populate the app with sample data, run:
 
 This will create:
 
-A test user:
-Username: testuser
-Password: testpassword
+A test user:  
+Username: testuser  
+Password: testpassword  
 
 Five quotes (three dated in the past, each with a journal entry).
 
@@ -87,5 +87,4 @@ Start the Frontend Client
 In a separate terminal:
 - cd client
 - npm run dev
-The app should now be running at:
-http://localhost:5173
+The app should now be running at: http://localhost:5173
