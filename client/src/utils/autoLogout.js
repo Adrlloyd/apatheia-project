@@ -1,4 +1,4 @@
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { clearUserSession } from './storageUtils';
 
 export function setupAutoLogout(token, onExpire) {
