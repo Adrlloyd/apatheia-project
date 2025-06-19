@@ -3,7 +3,7 @@ import cors from 'cors';
 
 import './models/associateModels';
 import authRoutes from './routes/authRoutes';
-import quoteRoutes from './routes/quotesRoute';
+import quoteRoutes from './routes/quoteRoute';
 import journalRoutes from './routes/journalRoutes';
 import userRoutes from './routes/userRoutes';
 import openaiRoutes from './routes/openaiRoute';

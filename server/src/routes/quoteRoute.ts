@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAQuote } from '../controllers/quotesController';
+import { getAQuote } from '../controllers/quoteController';
 
 const router: Router = Router();
 
