@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { useState, useEffect } from 'react';
 import '../styles/Navbar.css';
 import { getUserInfo, clearUserSession } from '../utils/storageUtils';
